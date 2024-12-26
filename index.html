@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Calculator</title>
+
+
+<style>
+    *{margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f0f0f0;
+    }
+    .calculator{
+      background-color: #333;
+      border-radius: 10px;
+      padding: 20px;
+    }
+
+    .display{
+      margin-bottom: 20px;
+    
+    }
+
+    #result{
+      width: 100%;
+      height: 60px;
+      font-size: 2rem;
+      text-align: right;
+      padding: 10px;
+      background-color: #f0f0f0;
+      border: none;
+      border-radius: 5px;
+    }
+
+    .buttons{
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+
+    }
+
+    button{
+      padding: 15px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #666;
+      color: white;
+      transition: background-color 0.2s;
+    }
+
+    button:hover{
+      background-color: #777;
+    }
+
+    .operator{
+      background-color: #ff9500;
+    }
+
+    .operator.hover{
+      background-color: #ffaa33;
+    }
+    
+    .equal{
+
+      background-color: #2ecc71;
+      grid-column: span 2;
+    }
+    .equal:hover{
+      background-color: #27ae60;
+
+    }
+  
+
+
+
+
+
+</style>
+
+
+
+</head>
+<body>
+    <div class="calculator">
+        <div class="display">
+            <input type="text" id="result" readonly>
+        </div>
+        <div class="buttons">
+            <button class="operator" onclick="clearDisplay()">C</button>
+            <button class="operator" onclick="deleteLastChar()">←</button>
+            <button class="operator" onclick="appendToDisplay('%')">%</button>
+            <button class="operator" onclick="appendToDisplay('/')">/</button>
+
+            <button onclick="appendToDisplay('7')">7</button>
+            <button onclick="appendToDisplay('8')">8</button>
+            <button onclick="appendToDisplay('9')">9</button>
+            <button class="operator" onclick="appendToDisplay('*')">×</button>
+
+            <button onclick="appendToDisplay('4')">4</button>
+            <button onclick="appendToDisplay('5')">5</button>
+            <button onclick="appendToDisplay('6')">6</button>
+            <button class="operator" onclick="appendToDisplay('-')">-</button>
+
+            <button onclick="appendToDisplay('1')">1</button>
+            <button onclick="appendToDisplay('2')">2</button>
+            <button onclick="appendToDisplay('3')">3</button>
+            <button class="operator" onclick="appendToDisplay('+')">+</button>
+
+            <button onclick="appendToDisplay('0')">0</button>
+            <button onclick="appendToDisplay('.')">.</button>
+            <button class="equal" onclick="calculate()" >=</button>
+        </div>
+    </div>
+
+    <script>
+      const result = document.getElementById('result');
+  
+      function appendToDisplay(value) {
+          result.value += value;
+      }
+  
+      function clearDisplay() {
+          result.value = '';
+      }
+  
+      function deleteLastChar() {
+          result.value = result.value.slice(0, -1);
+      }
+  
+      function calculate() {
+          try {
+              let expression = result.value.replace('×', '*');
+  
+              if (expression.includes('%')) {
+                  expression = handlePercentage(expression);
+              }
+              const answer = eval(expression);
+  
+              result.value = Number.isInteger(answer) ? answer : answer.toFixed(2);
+  
+          } catch (error) {
+              result.value = 'Error';
+              setTimeout(clearDisplay, 1500);
+          }
+      }
+  
+      function handlePercentage(expression) {
+          if (expression.includes('%')) {
+              return expression.replace('%', '/100');
+          }
+          return expression;
+      }
+  </script>
+
+    
+</body>
+</html>
